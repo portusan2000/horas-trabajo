@@ -1,1 +1,42 @@
-<p>home works!</p>
+<div class="container mt-5 p-0">
+    <div class="row justify-content-center">
+        <p-panel class="col-md-12" header="Entrada de Datos" [toggleable]="true">
+            <form #frmData="ngForm" (ngSubmit)="onSubmit(frmData)">
+                <div class="ui-g ui-fluid">
+                    <!-- Fecha de guardia -->
+                    <div class="ui-g-12 ui-md-2">
+                        <p-calendar [(ngModel)]="fecha" [locale]="es" dateFormat="dd/mm/yy" [readonlyInput]="true" [showIcon]="true" placeholder="Fecha" name="fecha" required></p-calendar>
+                        <p>Fecha: {{ fecha | date:"dd-MM-yyyy" }}</p>
+                    </div>
+
+                    <!-- Cantidad de Horas -->
+                    <div class="ui-g-12 ui-md-1">
+                        <p-spinner size="3" [(ngModel)]="horas" [step]="0.25" [min]="0" [max]="24" placeholder="Time" name="horas" required></p-spinner>
+                    </div>
+
+                    <!-- Tipo de Hora Normal o Nocturna -->
+                    <div class="ui-g-12 ui-md-2">
+                        <p-dropdown [options]="tipoHoras" [(ngModel)]="selectedHora" placeholder="Tipo de Hora" optionLabel="name" [showClear]="true" name="precio" required></p-dropdown>
+                        <p>Precio Hora: {{ selectedHora ? selectedHora.precio : "none" }}</p>
+                    </div>
+
+                    <!-- Lugar donde se trabajó -->
+                    <div class="ui-g-12 ui-md-3">
+                        <p-dropdown [options]="lugares" [(ngModel)]="selectedLugar" placeholder="Lugar de Trabajo" optionLabel="name" [showClear]="true" name="lugar" required></p-dropdown>
+                        <p>Lugar de Trabajo: {{ selectedLugar ? selectedLugar.code : "none" }}</p>
+                    </div>
+
+                    <!-- Botones de Operaciones -> Guardar-->
+                    <div class="ui-g-12 ui-md-2">
+                        <button pButton type="submit" label="Guardar" class="ui-button-success" icon="pi pi-save" [disabled]="!frmData.valid"></button>
+                    </div>
+
+                    <!-- Botones de Operaciones -> Cancelar -->
+                    <div class="ui-g-12 ui-md-2">
+                        <button pButton type="button" label="Cancelar" class="ui-button-danger" icon="pi pi-times" (click)="cancelarForm(frmData)"></button>
+                    </div>
+                </div>
+            </form>
+        </p-panel>
+    </div>
+</div>
