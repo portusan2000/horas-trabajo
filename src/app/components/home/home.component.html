@@ -4,33 +4,34 @@
         <p-panel class="col-md-12" header="Entrada de Datos" [toggleable]="true">
             <form #frmData="ngForm" (ngSubmit)="onSubmit(frmData)">
                 <div class="ui-g ui-fluid">
+                    <input type="hidden" [(ngModel)]="trabajomodel._id" name="_id">
                     <!-- Fecha de guardia -->
                     <div class="ui-g-12 ui-md-2">
-                        <p-calendar [(ngModel)]="fecha" [locale]="es" dateFormat="dd/mm/yy" [readonlyInput]="true" [showIcon]="true" placeholder="Fecha" name="fecha" required></p-calendar>
+                        <p-calendar [(ngModel)]="trabajomodel.fecha" [locale]="es" dateFormat="dd/mm/yy" [readonlyInput]="true" [showIcon]="true" placeholder="Fecha" name="fecha" [minDate]="minDate" [maxDate]="maxDate" required></p-calendar>
                         <!-- <p>Fecha: {{ fecha | date:"dd-MM-yyyy" }}</p> -->
                     </div>
 
                     <!-- Cantidad de Horas -->
                     <div class="ui-g-12 ui-md-2">
-                        <p-calendar [(ngModel)]="horas" [timeOnly]="true" name="horas" placeholder="Horas" [showIcon]="true" required></p-calendar>
+                        <p-calendar [(ngModel)]="trabajomodel.horas" [timeOnly]="true" name="horas" placeholder="Horas" [showIcon]="true" required></p-calendar>
                         <!-- <p>Horas: {{ horas | date:"shortTime" }}</p> -->
                     </div>
 
                     <!-- Tipos de Horas -->
                     <div class="ui-g-12 ui-md-2">
-                        <p-dropdown [options]="tipoHoras" [(ngModel)]="selectedHora" placeholder="Tipo de Hora" optionLabel="nombre" [showClear]="true" name="tipoHora" required></p-dropdown>
+                        <p-dropdown [options]="tipoHoras" [(ngModel)]="trabajomodel.tipoHora" placeholder="Tipo de Hora" optionLabel="nombre" [showClear]="true" name="tipoHora" required></p-dropdown>
                         <!-- <p>Tipo de Hora: {{ selectedHora ? selectedHora.codigo : "none" }}</p> -->
                     </div>
 
                     <!-- Lugar de Trabajo-->
                     <div class="ui-g-12 ui-md-2">
-                        <p-dropdown [options]="lugares" [(ngModel)]="selectedLugar" placeholder="Lugar de Trabajo" optionLabel="nombre" [showClear]="true" name="lugarTrabajo" required></p-dropdown>
+                        <p-dropdown [options]="lugares" [(ngModel)]="trabajomodel.lugarTrabajo" placeholder="Lugar de Trabajo" optionLabel="nombre" [showClear]="true" name="lugarTrabajo" required></p-dropdown>
                         <!-- <p>Lugar de Trabajo: {{ selectedLugar ? selectedLugar.code : "none" }}</p> -->
                     </div>
 
                     <!-- Botones de Operaciones -> Guardar-->
                     <div class="ui-g-12 ui-md-2">
-                        <button pButton type="submit" label="Guardar" class="ui-button-success" icon="pi pi-save" [disabled]="!frmData.valid"></button>
+                        <button pButton type="submit" label="{{!trabajomodel._id? 'Guardar' : 'Actualizar'}}" class="ui-button-success" icon="pi pi-save" [disabled]="!frmData.valid"></button>
                     </div>
 
                     <!-- Botones de Operaciones -> Cancelar -->
@@ -53,15 +54,24 @@
 <div class="container p-0">
     <div class="row">
         <div class="col-md-12">
-            <p-table #dt [columns]="cols" [value]="trabajos" [paginator]="true" [rows]="12" [globalFilterFields]="['fecha']">
+            <p-table #dt [columns]="cols" [value]="trabajos" [paginator]="true" [rows]="9" [responsive]="true" [globalFilterFields]="['fecha']">
                 <ng-template pTemplate="caption">
-                    Lista de Países
-                    <div style="text-align: right">
-                        <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-                        <input type="text" pInputText size="50" placeholder="Fecha" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                    </div>
+                    Listado de Horas del año {{year |date:"yyyy" }}
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th colspan="3">
+                            <div style="text-align: center">
+                                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                                <input type="text" pInputText size="30" placeholder="Buscar por Fecha" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                            </div>
+                        </th>
+                        <th colspan="3">
+                            <div style="text-align: right">
+                                <button type="button" pButton icon="pi pi-file-pdf" iconPos="left" label="PDF" (click)="exportPdf()" class="ui-button-warning"></button>
+                            </div>
+                        </th>
+                    </tr>
                     <tr>
                         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{'width': col.width}">
                             <p-sortIcon *ngIf="col.field !=''" [field]="col.field"></p-sortIcon>
@@ -85,14 +95,22 @@
                         <td>{{trabajo.horas}}</td>
                         <td>{{trabajo.tipoHora}}</td>
                         <td>{{trabajo.lugarTrabajo}}</td>
+                        <td>
+                            <button pButton type="button" label="Editar" class="ui-button-info" icon="pi pi-pencil" (click)="editar(trabajo)"></button>
+                        </td>
+                        <td>
+                            <button pButton type="button" label="Borrar" class="ui-button-danger" icon="pi pi-trash" (click)=borrarTrabajo(trabajo._id)></button>
+                        </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <tr class="text-center">
                         <td>Totals</td>
-                        <td>Tiempo Total</td>
+                        <td>Tiempo Total: {{sumaHoras}}</td>
                         <td></td>
-                        <td> <button type="button" pButton icon="pi pi-file-pdf" iconPos="left" label="PDF" (click)="exportPdf()" class="ui-button-warning"></button></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
@@ -102,3 +120,12 @@
         </div>
     </div>
 </div>
+
+<!-- Declarar los toast -->
+<p-toast key="guardado"></p-toast>
+<p-toast key="actualizado"></p-toast>
+<p-toast key="borrado"></p-toast>
+<p-toast key="cancelado"></p-toast>
+
+<!-- Declarar el servicio de confirmDialog -->
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

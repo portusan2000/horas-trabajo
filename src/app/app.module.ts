@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 
 // Forms
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 
 // Services
 import { HttpClientModule } from '@angular/common/http';
@@ -21,6 +21,11 @@ import {DropdownModule} from 'primeng/dropdown';
 import {PanelModule} from 'primeng/panel';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
+
+// Services de PrimeNG, declarar en Providers
+import {ConfirmationService, MessageService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -31,7 +36,6 @@ import {TableModule} from 'primeng/table';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     CalendarModule,
@@ -39,9 +43,11 @@ import {TableModule} from 'primeng/table';
     DropdownModule,
     PanelModule,
     ButtonModule,
-    TableModule
+    TableModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
-  providers: [],
+  providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

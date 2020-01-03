@@ -21,5 +21,14 @@ export class ApiService {
     return this.http.post(urlApi, trabajo);
   }
 
+  deleteApi(id: string) {
+    const urlApi = `http://localhost:3000/trabajos/${id}`;
+    return this.http.delete(urlApi);
+  }
+
+  putApi(trabajo: ITrabajo) {
+    const urlApi = `http://localhost:3000/trabajos/${trabajo._id}`;
+    return this.http.put(urlApi, trabajo);
+  }
 
 }
