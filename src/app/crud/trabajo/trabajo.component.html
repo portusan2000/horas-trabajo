@@ -1,5 +1,5 @@
 <!-- Formulario de Entrada de Datos -->
-<div class="container mt-3 p-0">
+<div class="container mt-2 p-0">
     <div class="row justify-content-center">
         <p-panel class="col-md-12" header="Entrada de Datos" [toggleable]="true">
             <form #frmData="ngForm" (ngSubmit)="onSubmit(frmData)">
@@ -54,7 +54,7 @@
 <div class="container p-0">
     <div class="row">
         <div class="col-md-12">
-            <p-table #dt [columns]="cols" [value]="trabajos" [paginator]="true" [rows]="9" [responsive]="true" [globalFilterFields]="['fecha']">
+            <p-table #dt [columns]="cols" [value]="trabajos" [paginator]="true" [rows]="8" [responsive]="true" [globalFilterFields]="['fecha']">
                 <ng-template pTemplate="caption">
                     Listado de Horas del año {{year |date:"yyyy" }}
                 </ng-template>

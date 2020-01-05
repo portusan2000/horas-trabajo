@@ -4,37 +4,37 @@ import { ApiService } from '../../services/api.service';
 import { ITrabajo } from '../../models/trabajo.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-trabajo',
+  templateUrl: './trabajo.component.html',
+  styleUrls: ['./trabajo.component.css']
 })
-export class HomeComponent implements OnInit {
+export class TrabajoComponent implements OnInit {
 
-  // Variables de la Entrada de Datos
-  es: any;
-  trabajomodel: ITrabajo;
-
-  //Variables enlazadas al dropdown
-  tipoHoras: any[];
-  lugares: any[];
-
-
-  datosEnviados: ITrabajo;
-
-  minDate: Date;
-  maxDate: Date;
-  year: Date;
-  // Variables de la Tabla de Datos PrimeNG
-
-  trabajos: ITrabajo[] = [];
-  selectedTrabajos: ITrabajo[];
-  cols: any[];
-  columns: any[];
-  filterCentro: any[];
-  filterTipoHora: any[];
-  sumaHoras: string;
+   // Variables de la Entrada de Datos
+   es: any;
+   trabajomodel: ITrabajo;
+ 
+   //Variables enlazadas al dropdown
+   tipoHoras: any[];
+   lugares: any[];
+ 
+ 
+   datosEnviados: ITrabajo;
+ 
+   minDate: Date;
+   maxDate: Date;
+   year: Date;
+   // Variables de la Tabla de Datos PrimeNG
+ 
+   trabajos: ITrabajo[] = [];
+   selectedTrabajos: ITrabajo[];
+   cols: any[];
+   columns: any[];
+   filterCentro: any[];
+   filterTipoHora: any[];
+   sumaHoras: string;
+ 
 
   constructor(
     private _Api: ApiService,
@@ -117,9 +117,7 @@ export class HomeComponent implements OnInit {
 
   // Cuando se da guardar al formulario de entrada de Datos
   onSubmit(form: NgForm) {
-
     console.log(!form.value._id);
-
     if (!form.value._id) {
       // Crear Registro
       this.trabajomodel = {
@@ -148,7 +146,7 @@ export class HomeComponent implements OnInit {
     } else {
       // Actualizo el registro
       console.log(this.trabajomodel.fecha);
-      console.log('longitud de la fecha:',this.trabajomodel.fecha.length);
+      console.log('longitud de la fecha:', this.trabajomodel.fecha.length);
       var fechaCambiada = this.trabajomodel.fecha;
       this.trabajomodel = {
         _id: this.trabajomodel._id,
@@ -160,8 +158,8 @@ export class HomeComponent implements OnInit {
       console.log('Importante:', this.trabajomodel)
       this._Api.putApi(this.trabajomodel).subscribe(
         res => {
-        console.log('La respuesta del servidor es:', res);
-        this.getAllWorks();
+          console.log('La respuesta del servidor es:', res);
+          this.getAllWorks();
         }
       )
 
@@ -187,6 +185,7 @@ export class HomeComponent implements OnInit {
     )
   }
 
+  
   exportPdf() {
     import("jspdf").then(jsPDF => {
       import("jspdf-autotable").then(x => {
@@ -196,6 +195,7 @@ export class HomeComponent implements OnInit {
       })
     })
   }
+
 
   borrarTrabajo(id: string) {
     this.confirmationService.confirm({
@@ -233,12 +233,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  cambiaFecha (fechaCambiada) {
+  cambiaFecha(fechaCambiada) {
     if (fechaCambiada.length !== 10) {
       return fechaCambiada
     } else {
       return fechaCambiada.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })
     }
   }
+
 
 }
