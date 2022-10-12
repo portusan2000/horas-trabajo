@@ -23,7 +23,7 @@
     "bootstrap": "^4.4.1",
     "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.2.11",
     "popper.js": "^1.16.0",
     "primeicons": "^2.0.0",
